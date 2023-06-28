@@ -1,26 +1,44 @@
-CC=g++
-CFLAGS= -c -Wall
-SDL2= -w -lSDL2
+#The name of the binary we will be creating 
+BINARY=bin 
+#directories with all our source (.cpp) files 
+CODEDIR=. src
+#Directories with all our header (.hpp) files 
+INCDIR=. /include/
 
-all: Mandelbrot
+#Compiler. Define as gcc for C and g++ for C++
+CC=g++ 
 
-Mandelbrot: main.o engine.o renderer.o window.o pixel.o
-	$(CC) main.o engine.o renderer.o window.o pixel.o $(SDL2) -o Mandelbrot
+#Optimization flag
+# -O0 no optimization, faster compile time, great for debugging builds
+OPT=-O0
 
-main.o: src/main.cpp
-	$(CC) $(CFLAGS) -c src/main.cpp
+#Generate files that encode make rules for .hpp dependencies 
+DEPFLAGS=-MP -MD
 
-engine.o: src/engine.cpp
-	$(CC) $(CFLAGS) src/engine.cpp
+#Compiler flags
+# -Wall used to turn on most warnings
+# -c compiles sources to object files 
+# For each loop used to add -I onto each include directory
+CFLAGS=-c -Wall -g $( foreach D, $(INCDIR), -I$(D) ) $(OPT) $(DEPFLAGS)
 
-renderer.o: src/renderer.cpp
-	$(CC) $(CFLAGS) src/renderer.cpp
+#SDL2 comipler flasgs 
+SDL2=-w -lSDL2 -lSDL2_image
 
-window.o: src/window.cpp
-	$(CC) $(CFLAGS) src/window.cpp
+#Regular expression to find all the source files inside the source directories
+SOURCE=$(foreach D, $(CODEDIR), $(wildcard $(D)/*.cpp) )
 
-pixel.o: src/pixel.cpp
-	$(CC) $(CFLAGS) src/pixel.cpp
+#Regular expression replacement 
+OBJECT= $(patsubst %.cpp, %.o, $(SOURCE) )
+DEPFILES= $(patsubst %.cpp, %.d, $(SOURCE) )
+
+
+all: $(BINARY)
+
+$(BINARY): $(OBJECT)
+	$(CC) -o $@ $^ $(SDL2)
+
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm *.o
+	rm -rf $(BINARY) $(OBJECT) $(DEPFILES)
