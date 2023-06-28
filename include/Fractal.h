@@ -3,7 +3,8 @@
 
 #include <vector>
 
-class Fractal {
+class Fractal 
+{
 public:
     Fractal(int width, int height);
 

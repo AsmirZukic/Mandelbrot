@@ -5,7 +5,8 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-class Window {
+class Window 
+{
 public:
     Window(const std::string& title, int width, int height);
     ~Window();

@@ -3,7 +3,8 @@
 
 #include <SDL2/SDL.h>
 
-class InputHandler {
+class InputHandler 
+{
 public:
     InputHandler();
     ~InputHandler();

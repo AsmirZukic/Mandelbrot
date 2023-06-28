@@ -19,7 +19,7 @@ DEPFLAGS = -MP -MD
 # -Wall used to turn on most warnings
 # -c compiles sources to object files
 # For each loop used to add -I onto each include directory
-CFLAGS = -c -Wall -g -ltbb $(foreach D, $(INCDIR), -I$(D)) $(OPT) $(DEPFLAGS)
+CFLAGS = -c -Wall -g $(foreach D, $(INCDIR), -I$(D)) $(OPT) $(DEPFLAGS)
 
 # SDL2 compiler flags
 SDL2 = -w -lSDL2 -lSDL2_image

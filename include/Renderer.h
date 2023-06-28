@@ -4,7 +4,8 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
-class Renderer {
+class Renderer 
+{
 public:
     Renderer(SDL_Window* window);
     ~Renderer();
